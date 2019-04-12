@@ -1,0 +1,5 @@
+*.png
+*.jpg
+env
+.idea
+.DS_Store
