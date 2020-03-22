@@ -19,7 +19,7 @@ def parse_args(exec_path: str, args: list):
     name = os.path.basename(exec_path)
     parser = argparse.ArgumentParser(
         usage="%s [cmd]" % name,
-        description="A CLI toolkit for creating LUTs",
+        description="A CLI toolkit for creating LUTss",
     )
 
     cmd_p = parser.add_subparsers(dest="cmd", title="subcommands")
@@ -31,6 +31,7 @@ def parse_args(exec_path: str, args: list):
              " compression artifacts) which can be used to capture color"
              " transformations."
     )
+
     cmd.add_argument(
         "-s", "--size", metavar="S", dest="gen_size",
         help="Set size of the target hald.",
@@ -46,6 +47,7 @@ def parse_args(exec_path: str, args: list):
         help="Set repeat grid size NxN.",
         type=int, default=cReps,
     )
+
     cmd.add_argument(
         metavar="NAME", dest="gen_name",
         help="Set name for the output file.",
@@ -57,6 +59,7 @@ def parse_args(exec_path: str, args: list):
         "clut",
         help="Generate CLUT image and CUBE map file from a fortified THALD image."
     )
+
     cmd.add_argument(
         "-s", "--size", metavar="S", dest="clut_size",
         help="Set size of the hald.",
@@ -72,6 +75,7 @@ def parse_args(exec_path: str, args: list):
         help="Set repeat grid size NxN.",
         type=int, default=cReps,
     )
+
     cmd.add_argument(
         metavar="THALD", dest="clut_iname",
         help="Path to the transformed hald.",
