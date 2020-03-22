@@ -34,17 +34,17 @@ def parse_args(exec_path: str, args: list):
     cmd.add_argument(
         "-s", "--size", metavar="S", dest="gen_size",
         help="Set size of the target hald.",
-        nargs=1, type=int, default=cSize,
+        type=int, default=cSize,
     )
     cmd.add_argument(
         "-x", "--scale", metavar="S", dest="gen_scale",
         help="Set scale multiplier of the target hald.",
-        nargs=1, type=int, default=cScale,
+        type=int, default=cScale,
     )
     cmd.add_argument(
         "-r", "--reps", metavar="N", dest="gen_reps",
         help="Set repeat grid size NxN.",
-        nargs=1, type=int, default=cReps,
+        type=int, default=cReps,
     )
     cmd.add_argument(
         metavar="NAME", dest="gen_name",
@@ -60,17 +60,17 @@ def parse_args(exec_path: str, args: list):
     cmd.add_argument(
         "-s", "--size", metavar="S", dest="clut_size",
         help="Set size of the hald.",
-        nargs=1, type=int, default=cSize,
+        type=int, default=cSize,
     )
     cmd.add_argument(
         "-x", "--scale", metavar="S", dest="clut_scale",
         help="Set scale multiplier of the hald.",
-        nargs=1, type=int, default=cScale,
+        type=int, default=cScale,
     )
     cmd.add_argument(
         "-r", "--reps", metavar="N", dest="clut_reps",
         help="Set repeat grid size NxN.",
-        nargs=1, type=int, default=cReps,
+        type=int, default=cReps,
     )
     cmd.add_argument(
         metavar="THALD", dest="clut_iname",
