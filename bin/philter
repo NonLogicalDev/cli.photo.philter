@@ -5,7 +5,8 @@ import argparse
 
 import PIL.Image as pimg
 
-from philter import img_clut_to_cube, img_to_fortified, img_from_fortified, np_gen_hald_pixel_array
+from philter import img_clut_to_cube, img_from_fortified
+from philter.commands import cmd_gen
 
 DEFAULT_Scale = 8
 DEFAULT_Size = 5
@@ -114,20 +115,6 @@ def main(args: list):
         cmd_norm(a.clut_scale, padding, a.clut_reps, a.clut_iname, a.clut_name)
     elif a.cmd == "cube":
         cmd_cube(a.cube_iname, a.cube_name)
-
-
-def cmd_gen(size, scale, padding, reps, name):
-    # STEP 1: Construct Image array:
-    hald_pixels = np_gen_hald_pixel_array(size)
-    hald_img = pimg.fromarray(hald_pixels)
-
-    # STEP 2: Make Hald more resistant to artifacts:
-    hald_img = img_to_fortified(hald_img, scale, padding, reps)
-
-    # STEP 3: Done
-    image_output_path = os.path.abspath("%s.%s.png" % (name, size))
-    hald_img.save(image_output_path, format='png')
-    print("GENERATED: %s" % image_output_path)
 
 
 def cmd_norm(scale, padding, reps, in_name, out_name):
