@@ -8,4 +8,4 @@ python_version = "3.7"
 
 [dev-packages]
 philter = {editable = true,path = "."}
-
+twine = "*"
