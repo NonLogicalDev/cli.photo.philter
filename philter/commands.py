@@ -5,7 +5,7 @@ from PIL import Image as pimg
 from philter import np_gen_hald_pixel_array, img_to_fortified, img_from_fortified, img_clut_to_cube
 
 
-def cmd_gen(size, scale, padding, reps, name):
+def cmd_gen_thald(size, scale, padding, reps, name):
     # STEP 1: Construct Image array:
     hald_pixels = np_gen_hald_pixel_array(size)
     hald_img = pimg.fromarray(hald_pixels)
@@ -19,7 +19,7 @@ def cmd_gen(size, scale, padding, reps, name):
     print("GENERATED: %s" % image_output_path)
 
 
-def cmd_norm(scale, padding, reps, in_name, out_name):
+def cmd_thald_to_clut(scale, padding, reps, in_name, out_name):
     thald_img = pimg.open(in_name)
 
     if len(out_name) == 0:

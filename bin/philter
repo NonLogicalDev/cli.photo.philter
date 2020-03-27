@@ -3,10 +3,7 @@ import sys
 import os
 import argparse
 
-import PIL.Image as pimg
-
-from philter import img_clut_to_cube, img_from_fortified
-from philter.commands import cmd_gen
+from philter.commands import cmd_gen_thald, cmd_thald_to_clut, cmd_cube
 
 DEFAULT_Scale = 8
 DEFAULT_Size = 5
@@ -33,7 +30,9 @@ def parse_args(exec_path: str, args: list):
 
     cmd.add_argument(
         "-s", "--size", metavar="S", dest="gen_size",
-        help="Set size of the target hald.",
+        help="Set size of the target hald."
+             " The HALD column number, i.e how many color columns per HALD sample."
+             " (NOTE: Photoshop will only reliably work with 5 which is the default)",
         type=int, default=DEFAULT_Size,
     )
     cmd.add_argument(
@@ -61,7 +60,10 @@ def parse_args(exec_path: str, args: list):
 
     cmd.add_argument(
         "-s", "--size", metavar="S", dest="clut_size",
-        help="Set size of the hald.",
+        help="("
+             "Size argument is ignored for this command as it is not needed,"
+             " this argument is here to reassure the user that this is fine"
+             ")",
         type=int, default=DEFAULT_Size,
     )
     cmd.add_argument(
@@ -110,49 +112,18 @@ def main(args: list):
 
     p, a = parse_args(args[0], args[1:])
     if a.cmd == "gen":
-        cmd_gen(a.gen_size, a.gen_scale, padding, a.gen_reps, a.gen_name)
+        cmd_gen_thald(
+            a.gen_size,
+            a.gen_scale, padding, a.gen_reps,
+            a.gen_name
+        )
     elif a.cmd == "clut":
-        cmd_norm(a.clut_scale, padding, a.clut_reps, a.clut_iname, a.clut_name)
+        cmd_thald_to_clut(
+            a.clut_scale, padding, a.clut_reps,
+            a.clut_iname, a.clut_name
+        )
     elif a.cmd == "cube":
         cmd_cube(a.cube_iname, a.cube_name)
-
-
-def cmd_norm(scale, padding, reps, in_name, out_name):
-    thald_img = pimg.open(in_name)
-
-    if len(out_name) == 0:
-        in_name_root, _ = os.path.splitext(in_name)
-        out_name = os.path.join("%s_clut" % (in_name_root))
-    elif os.path.isdir(out_name):
-        in_name_root, _ = os.path.splitext(os.path.basename(in_name))
-        out_name = os.path.join(out_name, "%s_clut" % in_name_root)
-
-
-    image_output_path = os.path.abspath("%s.png" % out_name)
-    hald_img = img_from_fortified(thald_img, scale, padding, reps, fast=False)
-    hald_img.save(image_output_path, format='png')
-    print("GENERATED: %s" % image_output_path)
-
-    cubemap_output_path = os.path.abspath("%s.cube" % out_name)
-    cube_str = img_clut_to_cube(hald_img)
-    with open(cubemap_output_path, "w") as f:
-        f.write(cube_str)
-    print("GENERATED: %s" % cubemap_output_path)
-
-
-def cmd_cube(in_name, out_name):
-    clut_img = pimg.open(in_name)
-
-    if len(out_name) == 0:
-        in_name_root, _ = os.path.splitext(in_name)
-        out_name = os.path.join("%s_clut" % (in_name_root))
-    elif os.path.isdir(out_name):
-        in_name_root, _ = os.path.splitext(os.path.basename(in_name))
-        out_name = os.path.join(out_name, "%s_clut" % in_name_root)
-
-    cube_str = img_clut_to_cube(clut_img)
-    with open("%s.cube" % (out_name), "w") as f:
-        f.write(cube_str)
 
 
 if __name__ == '__main__':
